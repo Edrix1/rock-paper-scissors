@@ -4,71 +4,95 @@
     <title>Rock/Paper/Scissors</title>
 </head>
 <body>
-<p>"Hello world"</p>
+<button id="rock"> Rock </button>
+<button id="paper"> Paper </button>
+<button id="scissor"> Scissor </button>
+
+<div id="result"> </div>
+<div id ="score"> 
+    <p id="player"> player:</p>
+    <p id="computer"> computer: </p>
+</div>
 
 <script>
+let playerScore = 0;
+let computerScore = 0;
 
 function getComputerChoice(){
-    const choices = ['Rock', 'Paper', 'Scissor'];
+    const choices = ['rock', 'paper', 'scissor'];
     const randomIndex = Math.floor(Math.random() * choices.length);
     return choices[randomIndex];
 }
 
-
 function playRound(playerSelection, computerSelection) {
-    const playerChoice = playerSelection.toLowerCase();
-    const computerChoice = computerSelection.toLowerCase();
-
-    if (playerChoice === computerChoice) {
-        return ('its a tie')
+   const playerChoice = playerSelection.toLowerCase();
+   const computerChoice = computerSelection.toLowerCase();
+    if (playerSelection === computerSelection) {
+        return ('its a tie round')
     } else if (
     (playerChoice === 'rock' && computerChoice === 'scissor') ||
     (playerChoice === 'paper' && computerChoice === 'rock') ||
     (playerChoice === 'scissor' && computerChoice === 'paper')
     ) {
-        return("Player wins!");
+        playerScore++;
+        return("Player wins the round");
     } else {
-        return("Computer wins!")
+        computerScore++;
+        return("Computer wins the round")
     }
 }
 
-
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let round =1; round <= 5; round++) {
-        const playerSelection = prompt ("Enter your choice");
-        const computerSelection = getComputerChoice();
-        console.log("The computer chose " + computerSelection)
-
-        const result = playRound(playerSelection, computerSelection);
-
-        if (result === "Player wins!"){
-            playerScore++;
-            console.log('You win!')
-            console.log("Round " + round)
-        }
-
-        else if (result === "Computer wins!") {
-            computerScore++;
-            console.log('You lost!')
-            console.log("Round " + round)
-        }
-
-        else {
-            console.log ("It's a tie!")
-            console.log("Round " + round)
-        }
-    }
-    console.log ("Your score is " + playerScore);
-    console.log ("The computer score is " + computerScore);
+function updateScore() {
+    const playerScoreElement = document.querySelector('#player');
+    const computerScoreElement = document.querySelector('#computer');
+    playerScoreElement.textContent = playerScore;
+    computerScoreElement.textContent = computerScore;
 }
 
-game ();
+function announceWinner () {
+    if (playerScore >= 5) {
+        return ('PLAYER WON THE GAME!');
+    } else if (computerScore >= 5) {
+        return ('COMPUTER WON THE GAME!')
+    } return ('');
+}
 
+const rockButton = document.querySelector('#rock');
+const paperButton = document.querySelector('#paper');
+const scissorButton = document.querySelector('#scissor');
+const resultDiv = document.querySelector('#result');
+const winner = document.querySelector('#score')
 
-
+rockButton.addEventListener ('click', function() {
+    const result = playRound('rock', getComputerChoice());
+    resultDiv.textContent = result;
+    updateScore();
+    winnerMessage = announceWinner();
+    if (winnerMessage) {
+        resultDiv.textContent = winnerMessage;
+    }
+    
+});
+paperButton.addEventListener('click', function () {
+    const result = playRound('paper', getComputerChoice());
+    resultDiv.textContent = result;
+    updateScore();
+    winnerMessage = announceWinner();
+    if (winnerMessage) {
+        resultDiv.textContent = winnerMessage;
+        return;
+    }
+});
+scissorButton.addEventListener('click', function (){
+    const result= playRound('scissor', getComputerChoice());
+    resultDiv.textContent = result;
+    updateScore;
+    winnerMessage = announceWinner();
+    if (winnerMessage) {
+        resultDiv.textContent = winnerMessage;
+        return;
+    }
+});
 
 
 
